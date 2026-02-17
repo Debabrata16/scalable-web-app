@@ -4,43 +4,40 @@ const jwt = require("jsonwebtoken");
 
 // Register User
 exports.register = async (req, res) => {
-    try {
-        const { name, email, password } = req.body;
+  try {
+    const { name, email, password } = req.body;
 
-        if (!name || !email || !password) {
-            return res.status(400).json({ message: "All fields are required" });
-        }
+    if (!name || !email || !password) {
+      return res.status(400).json({ message: "All fields are required" });
+    }
 
-        // Check if user already exists
-        db.query(
-            "SELECT * FROM users WHERE email = ?",
-            [email],
-            async (err, result) => {
-                if (err) return res.status(500).json(err);
+    // check existing user
+    const [existing] = await db.promise().query(
+      "SELECT * FROM users WHERE email = ?",
+      [email]
+    );
 
-                if (result.length > 0) {
-                    return res.status(400).json({ message: "User already exists" });
-                }
+    if (existing.length > 0) {
+      return res.status(400).json({ message: "User already exists" });
+    }
 
-                const hashedPassword = await bcrypt.hash(password, 10);
+    // hash password
+    const hashedPassword = await bcrypt.hash(password, 10);
 
-                db.query(
-                    "INSERT INTO users (name, email, password) VALUES (?, ?, ?)",
-                    [name, email, hashedPassword],
-                    (err) => {
-                        if (err) return res.status(500).json(err);
+    // insert user
+    await db.promise().query(
+      "INSERT INTO users (name, email, password) VALUES (?, ?, ?)",
+      [name, email, hashedPassword]
+    );
 
-                        res.status(201).json({ message: "User registered successfully" });
-                    }
-                );
-            }
-        );
-    } catch (error) {
-    console.error("Register error:", error);
-    res.status(500).json({ message: error.message });
-}
+    res.status(201).json({ message: "User registered successfully" });
 
+  } catch (error) {
+    console.error("REGISTER ERROR:", error);
+    res.status(500).json({ message: "Registration failed" });
+  }
 };
+
 
 // Login User
 exports.login = (req, res) => {
