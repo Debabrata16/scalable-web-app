@@ -2,7 +2,7 @@ import axios from "axios";
 
 // fallback if env not loaded
 const baseURL =
-  import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+  import.meta.env.VITE_API_URL;
 
 const API = axios.create({
   baseURL,

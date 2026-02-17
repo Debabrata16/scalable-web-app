@@ -13,19 +13,18 @@ function Dashboard() {
   const [loading, setLoading] = useState(true);
   const [profile, setProfile] = useState(null);
 
-  // Fetch tasks
   const fetchTasks = async () => {
     try {
       const res = await API.get("/tasks");
       setTasks(res.data);
     } catch (error) {
-      console.error(error);
+      console.error("Tasks error:", error);
     } finally {
       setLoading(false);
     }
   };
 
-  // Fetch profile
+
   const fetchProfile = async () => {
     try {
       const res = await API.get("/auth/profile");
@@ -40,7 +39,9 @@ function Dashboard() {
     fetchProfile();
   }, []);
 
-  // Add task
+
+  // Add Task
+
   const addTask = async () => {
     if (!title.trim()) return;
 
@@ -49,29 +50,35 @@ function Dashboard() {
       setTitle("");
       fetchTasks();
     } catch (error) {
-      console.error(error);
+      console.error("Add task error:", error);
     }
   };
 
-  // Delete task
+
+  // Delete Task
+
   const deleteTask = async (id) => {
     try {
       await API.delete(`/tasks/${id}`);
       fetchTasks();
     } catch (error) {
-      console.error(error);
+      console.error("Delete task error:", error);
     }
   };
 
+ 
   // Logout
+  
   const handleLogout = () => {
     logout();
     navigate("/");
   };
 
-  // Filtered tasks
+
+  // Filtered Tasks
+
   const filteredTasks = tasks.filter(task =>
-    task.title.toLowerCase().includes(search.toLowerCase())
+    task.title?.toLowerCase().includes(search.toLowerCase())
   );
 
   return (
@@ -79,13 +86,12 @@ function Dashboard() {
 
       {/* Navbar */}
       <div className="bg-white shadow-md px-8 py-4 flex justify-between items-center">
-
         <h1 className="text-2xl font-bold text-indigo-600">
           Task Dashboard
         </h1>
 
         <div className="flex items-center gap-4">
-          
+
           {/* Profile */}
           {profile && (
             <div className="flex items-center gap-2">
@@ -104,14 +110,11 @@ function Dashboard() {
           >
             Logout
           </button>
-
         </div>
-
       </div>
 
       {/* Main */}
       <div className="flex justify-center items-start flex-1 p-6">
-
         <div className="w-full max-w-2xl space-y-6">
 
           {/* Search */}
@@ -164,7 +167,7 @@ function Dashboard() {
             ) : (
               filteredTasks.map(task => (
                 <div
-                  key={task._id}
+                  key={task.id}
                   className="flex justify-between items-center bg-gray-50 p-3 rounded-lg mb-3 hover:bg-indigo-50 transition"
                 >
                   <span className="text-gray-700 font-medium">
