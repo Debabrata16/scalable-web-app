@@ -4,7 +4,6 @@ import { AuthContext } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 
 function Dashboard() {
-
   const { logout } = useContext(AuthContext);
   const navigate = useNavigate();
 
@@ -12,6 +11,7 @@ function Dashboard() {
   const [title, setTitle] = useState("");
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
+  const [profile, setProfile] = useState(null);
 
   // Fetch tasks
   const fetchTasks = async () => {
@@ -25,8 +25,19 @@ function Dashboard() {
     }
   };
 
+  // Fetch profile
+  const fetchProfile = async () => {
+    try {
+      const res = await API.get("/auth/profile");
+      setProfile(res.data);
+    } catch (error) {
+      console.error("Profile error:", error);
+    }
+  };
+
   useEffect(() => {
     fetchTasks();
+    fetchProfile();
   }, []);
 
   // Add task
@@ -58,40 +69,50 @@ function Dashboard() {
     navigate("/");
   };
 
-  return (
+  // Filtered tasks
+  const filteredTasks = tasks.filter(task =>
+    task.title.toLowerCase().includes(search.toLowerCase())
+  );
 
+  return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-100 via-purple-100 to-pink-100 flex flex-col">
 
       {/* Navbar */}
-      <div className="bg-white shadow-md px-8 py-4 flex justify-between items-center transition-all duration-300 hover:shadow-lg">
+      <div className="bg-white shadow-md px-8 py-4 flex justify-between items-center">
 
-        <h1 className="text-2xl font-bold text-indigo-600 tracking-wide">
+        <h1 className="text-2xl font-bold text-indigo-600">
           Task Dashboard
         </h1>
 
-        <button
-          onClick={handleLogout}
-          className="
-            bg-red-500 text-white px-5 py-2 rounded-lg
-            transition-all duration-300
-            hover:bg-red-600 hover:scale-105
-            active:scale-95
-            shadow-md hover:shadow-lg
-          "
-        >
-          Logout
-        </button>
+        <div className="flex items-center gap-4">
+          
+          {/* Profile */}
+          {profile && (
+            <div className="flex items-center gap-2">
+              <div className="w-9 h-9 rounded-full bg-indigo-600 text-white flex items-center justify-center font-semibold">
+                {profile.name?.charAt(0).toUpperCase()}
+              </div>
+              <span className="text-gray-700 font-medium">
+                {profile.name}
+              </span>
+            </div>
+          )}
+
+          <button
+            onClick={handleLogout}
+            className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition"
+          >
+            Logout
+          </button>
+
+        </div>
 
       </div>
 
-      {/* Main Content */}
+      {/* Main */}
       <div className="flex justify-center items-start flex-1 p-6">
 
-        <div className="
-          w-full max-w-2xl
-          space-y-6
-          animate-fadeIn
-        ">
+        <div className="w-full max-w-2xl space-y-6">
 
           {/* Search */}
           <input
@@ -99,126 +120,70 @@ function Dashboard() {
             placeholder="Search tasks..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="
-              w-full p-3 rounded-xl border
-              shadow-sm
-              focus:outline-none focus:ring-2 focus:ring-indigo-400
-              transition-all duration-300
-              hover:shadow-md
-            "
+            className="w-full p-3 rounded-xl border shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-400"
           />
 
-          {/* Add Task Card */}
-          <div className="
-            bg-white p-6 rounded-xl shadow-md
-            transition-all duration-300
-            hover:shadow-xl hover:-translate-y-1
-          ">
-
+          {/* Add Task */}
+          <div className="bg-white p-6 rounded-xl shadow-md">
             <h2 className="text-lg font-semibold mb-4 text-gray-700">
               Add New Task
             </h2>
 
             <div className="flex gap-3">
-
               <input
                 type="text"
                 placeholder="Enter task..."
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
-                className="
-                  flex-1 p-3 border rounded-lg
-                  focus:outline-none focus:ring-2 focus:ring-indigo-400
-                  transition-all duration-300
-                "
+                className="flex-1 p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400"
               />
 
               <button
                 onClick={addTask}
-                className="
-                  bg-indigo-600 text-white px-6 rounded-lg
-                  transition-all duration-300
-                  hover:bg-indigo-700 hover:scale-105
-                  active:scale-95
-                  shadow-md hover:shadow-lg
-                "
+                className="bg-indigo-600 text-white px-6 rounded-lg hover:bg-indigo-700 transition"
               >
                 Add
               </button>
-
             </div>
-
           </div>
 
-          {/* Tasks Card */}
-          <div className="
-            bg-white p-6 rounded-xl shadow-md
-            transition-all duration-300
-            hover:shadow-xl hover:-translate-y-1
-          ">
-
+          {/* Tasks */}
+          <div className="bg-white p-6 rounded-xl shadow-md">
             <h2 className="text-lg font-semibold mb-4 text-gray-700">
-              Your Tasks ({tasks.length})
+              Your Tasks ({filteredTasks.length})
             </h2>
 
             {loading ? (
-
-              <div className="text-center text-gray-400 py-6 animate-pulse">
+              <div className="text-center text-gray-400 py-6">
                 Loading tasks...
               </div>
-
-            ) : tasks.length === 0 ? (
-
+            ) : filteredTasks.length === 0 ? (
               <div className="text-center text-gray-400 py-6">
-                No tasks yet 
+                No tasks found
               </div>
-
             ) : (
+              filteredTasks.map(task => (
+                <div
+                  key={task._id}
+                  className="flex justify-between items-center bg-gray-50 p-3 rounded-lg mb-3 hover:bg-indigo-50 transition"
+                >
+                  <span className="text-gray-700 font-medium">
+                    {task.title}
+                  </span>
 
-              tasks
-                .filter(task =>
-                  task.title.toLowerCase().includes(search.toLowerCase())
-                )
-                .map(task => (
-
-                  <div
-                    key={task.id}
-                    className="
-                      flex justify-between items-center
-                      bg-gray-50 p-3 rounded-lg mb-3
-                      transition-all duration-300
-                      hover:bg-indigo-50 hover:shadow-md hover:scale-[1.02]
-                    "
+                  <button
+                    onClick={() => deleteTask(task._id)}
+                    className="bg-red-500 text-white px-4 py-1 rounded-lg hover:bg-red-600 transition"
                   >
-
-                    <span className="text-gray-700 font-medium">
-                      {task.title}
-                    </span>
-
-                    <button
-                      onClick={() => deleteTask(task.id)}
-                      className="
-                        bg-red-500 text-white px-4 py-1 rounded-lg
-                        transition-all duration-300
-                        hover:bg-red-600 hover:scale-105
-                        active:scale-95
-                      "
-                    >
-                      Delete
-                    </button>
-
-                  </div>
-
-                ))
-
+                    Delete
+                  </button>
+                </div>
+              ))
             )}
-
           </div>
 
         </div>
-
       </div>
-
     </div>
   );
 }
