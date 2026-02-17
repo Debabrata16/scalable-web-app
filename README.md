@@ -117,51 +117,36 @@ npm run dev
 Create .env
 
 VITE_API_URL=https://scalable-web-app-fn3l.onrender.com/api
- Security Practices
+ 
+ ## Security Practices
 Password hashing using bcrypt
-
 JWT authentication middleware
-
 Protected API routes
-
 Input validation
-
 Error handling
 
- Scalability Approach (Production)
+## Scalability Approach (Production)
 If scaling for production:
-
 Frontend
-
-Deploy via CDN (Vercel)
-
-Code splitting
-
-Lazy loading routes
-
-Environment-based API config
+- Deploy via CDN (Vercel)
+- Code splitting
+- Lazy loading routes
+- Environment-based API config
 
 Backend
-
-Stateless JWT auth
-
-Horizontal scaling (multiple instances)
-
-Load balancer
-
-Separate auth & task services
-
-Caching (Redis)
+- Stateless JWT auth
+- Horizontal scaling (multiple instances)
+- Load balancer
+- Separate auth & task services
+- Caching (Redis)
 
 Database
-
-Indexed queries
-
-Connection pooling
-
-Read replicas
+- Indexed queries
+- Connection pooling
+- \Read replicas
 
 
   
   
+
 
