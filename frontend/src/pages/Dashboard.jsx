@@ -170,7 +170,7 @@ function Dashboard() {
             ) : tasks.length === 0 ? (
 
               <div className="text-center text-gray-400 py-6">
-                No tasks yet 🚀
+                No tasks yet 
               </div>
 
             ) : (
