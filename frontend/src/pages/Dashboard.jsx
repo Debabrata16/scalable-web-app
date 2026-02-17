@@ -172,7 +172,7 @@ function Dashboard() {
                   </span>
 
                   <button
-                    onClick={() => deleteTask(task._id)}
+                    onClick={() => deleteTask(task.id)}
                     className="bg-red-500 text-white px-4 py-1 rounded-lg hover:bg-red-600 transition"
                   >
                     Delete
