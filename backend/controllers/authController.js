@@ -38,6 +38,32 @@ exports.register = async (req, res) => {
     res.status(500).json({ message: "Registration failed" });
   }
 };
+//profile
+exports.profile = (req, res) => {
+    const token = req.headers.authorization?.split(" ")[1];
+
+    if (!token) {
+        return res.status(401).json({ message: "No token" });
+    }
+
+    try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+        db.query(
+            "SELECT id, name, email FROM users WHERE id = ?",
+            [decoded.id],
+            (err, result) => {
+                if (err) return res.status(500).json(err);
+                if (result.length === 0)
+                    return res.status(404).json({ message: "User not found" });
+
+                res.json(result[0]);
+            }
+        );
+    } catch (err) {
+        res.status(401).json({ message: "Invalid token" });
+    }
+};
 
 
 // Login User
