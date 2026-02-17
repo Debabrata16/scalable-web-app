@@ -11,21 +11,33 @@ const taskRoutes = require("./routes/taskRoutes");
 
 const app = express();
 
+// Allowed origins
 const allowedOrigins = [
   "http://localhost:5173",
-  "https://scalable-web-app-gk9h.vercel.app/"
+  "https://scalable-web-app-gk9h.vercel.app"
 ];
 
-app.use(cors({
-  origin: function (origin, callback) {
-    if (!origin) return callback(null, true);
-    if (allowedOrigins.indexOf(origin) === -1) {
-      return callback(new Error("CORS not allowed"), false);
-    }
-    return callback(null, true);
-  },
-  credentials: true
-}));
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      // allow server-to-server / curl / mobile
+      if (!origin) return callback(null, true);
+
+      // allow localhost + exact domain
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+
+      // allow all vercel preview deployments
+      if (origin.endsWith(".vercel.app")) {
+        return callback(null, true);
+      }
+
+      return callback(new Error("CORS not allowed"));
+    },
+    credentials: true
+  })
+);
 
 app.use(express.json());
 
