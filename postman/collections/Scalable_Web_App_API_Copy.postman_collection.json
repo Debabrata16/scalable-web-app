@@ -1,14 +1,14 @@
 {
   "info": {
-    "_postman_id": "12345678-1234-1234-1234-123456789000",
-    "name": "Scalable Web App API",
+    "_postman_id": "0e6ea9ce-2b8c-4c53-9601-f1138c2079e5",
+    "name": "Scalable Web App API Copy",
     "description": "Auth and Task API",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "item": [
     {
       "name": "Auth - Register",
-      "id": "bc03b192-c31c-4887-938e-a6434dfb97c3",
+      "id": "2d923927-785e-49ff-a428-27da30cc1ff0",
       "request": {
         "method": "POST",
         "header": [
@@ -40,7 +40,7 @@
     },
     {
       "name": "Auth - Login",
-      "id": "6214886b-79b1-40ad-a2e9-8ade822881d1",
+      "id": "b2911edd-396a-451e-829e-0a0f465efc5e",
       "request": {
         "method": "POST",
         "header": [
@@ -72,7 +72,7 @@
     },
     {
       "name": "Get Profile",
-      "id": "74c8a31c-c5b8-4e42-9647-12092194baf2",
+      "id": "35cec7bf-ba56-424f-8918-f16e3ffe5918",
       "request": {
         "method": "GET",
         "header": [
@@ -100,7 +100,7 @@
     },
     {
       "name": "Get Tasks",
-      "id": "0dfce4c3-708f-4e16-8495-72075623de4e",
+      "id": "480c2099-ee8b-479d-843b-b4ecd4d31e28",
       "request": {
         "method": "GET",
         "header": [
@@ -136,7 +136,7 @@
     },
     {
       "name": "Create Task",
-      "id": "180ae12e-c050-46bf-b934-614184e9f4c4",
+      "id": "a4e8a4b9-5f46-43b2-b119-39c2077a6b91",
       "request": {
         "method": "POST",
         "header": [
@@ -171,7 +171,7 @@
     },
     {
       "name": "Update Task",
-      "id": "abce75a0-71bd-4427-80b5-8e807468d882",
+      "id": "57a8daa5-fd52-4c5c-a26c-da9c2667c1ed",
       "request": {
         "method": "PUT",
         "header": [
@@ -204,8 +204,7 @@
           "variable": [
             {
               "key": "id",
-              "value": "",
-              "uuid": "1984ecb4-ac20-491d-b880-0c203554f525"
+              "value": ""
             }
           ]
         }
@@ -214,7 +213,7 @@
     },
     {
       "name": "Delete Task",
-      "id": "7bf9a18c-eb7f-4a21-a860-476d9b1654a1",
+      "id": "63d90794-3063-4483-a0c6-04237f2b8475",
       "request": {
         "method": "DELETE",
         "header": [
@@ -239,8 +238,7 @@
           "variable": [
             {
               "key": "id",
-              "value": "",
-              "uuid": "961b5f5e-d0d1-4940-b1e0-aa58a3e0ee27"
+              "value": ""
             }
           ]
         }
@@ -250,12 +248,12 @@
   ],
   "variable": [
     {
-      "id": "050b7d61-722e-48ff-b53d-99c9d5e31f56",
+      "id": "3902624b-55f3-4501-8d31-23901925e095",
       "key": "baseUrl",
       "value": "https://scalable-web-app-fn3l.onrender.com/api"
     },
     {
-      "id": "27176877-fab8-4f2a-af24-9934ad277ea4",
+      "id": "31840b54-22c2-44ff-af25-c8f354712103",
       "key": "token",
       "value": ""
     }
